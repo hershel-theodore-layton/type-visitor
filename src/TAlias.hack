@@ -1,5 +1,5 @@
 /** static-type-assertion-code-generator-interfaces is MIT licensed, see /LICENSE. */
-namespace HTL\StaticTypeAssertionCodegen;
+namespace HTL\StaticTypeAssertionCodegenInterfaces;
 
 type TAlias = shape(
   'alias' => ?string,
