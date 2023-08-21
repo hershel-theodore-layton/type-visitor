@@ -39,11 +39,17 @@ final class TestVisitorFunctionTest extends HackTest {
       '))',
     );
 
-    // Note that `class enum` is a `class` and not an `enum`.
+    // Note that `class enum` is an `enum` and not a `class` on hhvm 4.102.
+    // I am unable to confirm where in the range 4.102-4.109 the switch was made.
+    // I know that 4.109 has a modern `class` intepretation, so `<= 4.108`.
+    $enum_class = \version_compare(\HHVM_VERSION, '4.108', '<=')
+      ? '(from enum: _ HTL\TypeVisitor\Tests\MyClassEnum)'
+      : '(from class: _ HTL\TypeVisitor\Tests\MyClassEnum)';
+
     expect(static::visit<(MyEnum, MyClassEnum)>())->toEqual(
       '(from tuple: _ ('.
       '(from enum: _ HTL\TypeVisitor\Tests\MyEnum), '.
-      '(from class: _ HTL\TypeVisitor\Tests\MyClassEnum)'.
+      $enum_class.
       '))',
     );
 
