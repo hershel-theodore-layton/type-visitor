@@ -1,6 +1,6 @@
 {
   "name": "hershel-theodore-layton/type-visitor",
-  "description": "A visitor core for reifyied types",
+  "description": "A visitor core for reified types",
   "license": "MIT",
   "require": {
     "hhvm": "^4.102"
