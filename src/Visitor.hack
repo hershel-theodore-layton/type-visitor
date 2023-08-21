@@ -1,5 +1,5 @@
-/** static-type-assertion-code-generator-interfaces is MIT licensed, see /LICENSE. */
-namespace HTL\StaticTypeAssertionCodegenInterfaces;
+/** type-visitor is MIT licensed, see /LICENSE. */
+namespace HTL\TypeVisitor;
 
 interface TypeDeclVisitor<Tt, Tf> {
   /**
@@ -36,6 +36,7 @@ interface TypeDeclVisitor<Tt, Tf> {
   public function keyset(TAlias $alias, Tt $inner)[]: Tt;
   public function mixed(TAlias $alias)[]: Tt;
   public function nonnull(TAlias $alias)[]: Tt;
+  public function noreturn(TAlias $alias)[]: Tt;
   public function nothing(TAlias $alias)[]: Tt;
   public function null(TAlias $alias)[]: Tt;
   public function nullable(TAlias $alias, Tt $inner)[]: Tt;
@@ -47,4 +48,5 @@ interface TypeDeclVisitor<Tt, Tf> {
   public function tuple(TAlias $alias, vec<Tt> $elements)[]: Tt;
   public function vec(TAlias $alias, Tt $inner)[]: Tt;
   public function vecOrDict(TAlias $alias, vec<Tt> $inner)[]: Tt;
+  public function void(TAlias $alias)[]: Tt;
 }
