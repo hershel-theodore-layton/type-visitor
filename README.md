@@ -22,6 +22,15 @@ The [TAlias](./src/TAlias.hack) type contains three fields for advanced use:
    - A unique integer for each call to your visitor functions.
    - This sequence starts at `1` and increases with each call to `$visitor->x()`.
 
+**Warning for users on hhvm 4.102 through 4.108.**
+
+At some point between hhvm version 4.102 and 4.108,
+hhvm changed the kind of `enum class` from `enum` to `class`.
+This means that `->enum()` will be called instead of `->class()`.
+If your visitors need to have consistent behavior on all supported hhvm versions,
+you must add a reflection based check at the top of `function enum(...)` and
+call `->class()` if the argument is a `classname` of an `enum class`.
+
 Go ahead and build something awesome:
  - Generate documentation based on Hack types.
  - Create a "weak" assertion / coercion library.
