@@ -14,11 +14,11 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
   )[] {}
 
   public function panic(string $message)[]: string {
-    return $message;
+    throw new \UnexpectedValueException($message);
   }
 
   public function unsupportedType(string $type_name)[]: string {
-    return $type_name;
+    throw new \UnexpectedValueException($type_name);
   }
 
   public function shapeField(
