@@ -8,6 +8,11 @@ use namespace HH\Lib\{C, Str};
  * (All types that are not auto-imported are fully qualified.)
  */
 final class TypenameVisitor implements TypeDeclVisitor<string, string> {
+  const type TShapeKeyNamer = (function(?string, arraykey)[]: ?string);
+  public function __construct(
+    private this::TShapeKeyNamer $shapeKeyNamer = ($_, $_)[] ==> null,
+  )[] {}
+
   public function panic(string $message)[]: string {
     return $message;
   }
@@ -17,7 +22,7 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
   }
 
   public function shapeField(
-    ?string $_parent_shape_name,
+    ?string $parent_shape_name,
     arraykey $key,
     bool $_is_class_constant,
     bool $is_optional,
@@ -26,7 +31,8 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     return Str\format(
       '%s%s => %s',
       $is_optional ? '?' : '',
-      $key is string ? _Private\string_export($key) : (string)$key,
+      (($this->shapeKeyNamer)($parent_shape_name, $key)) ??
+        ($key is string ? _Private\string_export($key) : (string)$key),
       $type,
     );
   }
@@ -143,8 +149,10 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
   }
 
   public function tuple(TAlias $alias, vec<string> $elements)[]: string {
-    return
-      static::aliasOr($alias, Str\format('(%s)', Str\join($elements, ', ')));
+    return static::aliasOr(
+      $alias,
+      Str\format('(%s)', Str\join($elements, ', ')),
+    );
   }
 
   public function vec(TAlias $alias, string $inner)[]: string {
