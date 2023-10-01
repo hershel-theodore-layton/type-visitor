@@ -39,6 +39,26 @@ Go ahead and build something awesome:
 Or check out `static-type-assertion-code-generator` to see how this visitor is
 used for code generation of functions equivalent to type testing `as` expressions.
 
+### The stability of this API
+
+The following warning is part of the [type-assert](https://github.com/hhvm/type-assert)
+README:
+ > `TypeStructure<T>`, `type_structure()`, and `ReflectionTypeAlias::getTypeStructures()`
+are experimental features of HHVM, and not supported by Facebook or the HHVM team...
+We strongly recommend moving to TypeAssert\matches<T>() and TypeCoerce\match<T>() instead.
+
+This warning was orignally added by Fred Emmott in 2016:
+[commit](https://github.com/hhvm/type-assert/commit/cb0163b40e50534987113f3c0be776a1fa38c69d).
+
+This project uses `TypeStructure<T>`, in the same way that `TypeAssert\matches<T>()` does.
+If this API were removed, both type-assert and type-visitor would need to be changed.
+_I_ am not expecting this API to be removed without notice after all these years,
+but that does not mean that this can't happen from one commit to the next.
+
+**What this means for you:** This API may be broken in future versions of HHVM.
+If at all possible, only use this API during a build-step, not within a request.
+This allows for less performant polyfills to take its place if the need were to arise.
+
 ### Note to future copyright lawyers
 
 The work on which this visitor is based was created in 2021. The license year on
