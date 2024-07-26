@@ -6,7 +6,7 @@ use function Facebook\FBExpect\expect;
 use namespace HTL\TypeVisitor;
 
 final class TestVisitorFunctionTest extends HackTest {
-  public function test_simple_types(): void {
+  public function test_simple_types()[defaults]: void {
     expect(static::visit<(arraykey, bool, dynamic, float)>())->toEqual(
       '(from tuple: _ ('.
       '(from arraykey: _ arraykey), (from bool: _ bool), '.
@@ -31,7 +31,7 @@ final class TestVisitorFunctionTest extends HackTest {
     );
   }
 
-  public function test_class_types(): void {
+  public function test_class_types()[defaults]: void {
     expect(static::visit<(MyInterface, MyGenericInterface<int>)>())->toEqual(
       '(from tuple: _ ('.
       '(from interface: _ HTL\TypeVisitor\Tests\MyInterface), '.
@@ -68,7 +68,7 @@ final class TestVisitorFunctionTest extends HackTest {
     );
   }
 
-  public function test_array_types(): void {
+  public function test_array_types()[defaults]: void {
     expect(static::visit<dict<string, int>>())->toEqual(
       '(from dict: _ dict<(from string: _ string), (from int: _ int)>)',
     );
@@ -91,7 +91,7 @@ final class TestVisitorFunctionTest extends HackTest {
     );
   }
 
-  public function test_shapes_and_nullables(): void {
+  public function test_shapes_and_nullables()[defaults]: void {
     expect(static::visit<
       shape(
         'required' => int,
@@ -111,7 +111,7 @@ final class TestVisitorFunctionTest extends HackTest {
     );
   }
 
-  public function test_aliasses(): void {
+  public function test_aliasses()[defaults]: void {
     expect(static::visit<(MyClassAlias, IntAlias)>())->toEqual(
       '(from tuple: _ ('.
       '(from class: HTL\TypeVisitor\Tests\MyClassAlias HTL\TypeVisitor\Tests\MyClass), '.
