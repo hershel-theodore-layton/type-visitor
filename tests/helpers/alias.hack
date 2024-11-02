@@ -3,3 +3,4 @@ namespace HTL\TypeVisitor\Tests;
 
 type MyClassAlias = MyClass;
 newtype IntAlias = int;
+newtype AlreadyNullableIntAlias = ?int;

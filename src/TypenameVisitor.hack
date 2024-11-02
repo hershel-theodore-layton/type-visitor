@@ -112,7 +112,15 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
   }
 
   public function nullable(TAlias $alias, string $inner)[]: string {
-    return static::aliasOr($alias, '?'.$inner);
+    $alias_name = $alias['alias'];
+
+    if ($alias_name is null) {
+      return '?'.$inner;
+    }
+
+    $rt = new \ReflectionTypeAlias($alias_name);
+    $base = '\\'.$alias_name;
+    return $rt->getTypeStructure()['nullable'] ?? false ? $base : '?'.$base;
   }
 
   public function num(TAlias $alias)[]: string {
@@ -149,10 +157,8 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
   }
 
   public function tuple(TAlias $alias, vec<string> $elements)[]: string {
-    return static::aliasOr(
-      $alias,
-      Str\format('(%s)', Str\join($elements, ', ')),
-    );
+    return
+      static::aliasOr($alias, Str\format('(%s)', Str\join($elements, ', ')));
   }
 
   public function vec(TAlias $alias, string $inner)[]: string {
