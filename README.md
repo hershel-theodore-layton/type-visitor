@@ -65,5 +65,5 @@ The work on which this visitor is based was created in 2021. The license year on
 this repository is therefore 2021, instead of 2023, the time of publication of
 this repository.
 
-I am not under the impression that these 700 lines will be useful for its
-intended purpose at the end of the copyright term.
+I am not under the impression that these ~1000 lines will be useful for
+their intended purpose at the end of the copyright term.
