@@ -99,6 +99,7 @@ final class TestVisitorFunctionTest extends HackTest {
         ?'optional' => float,
         ?'illusive' => ?bool,
         MyClass::ONE => num,
+        /*_*/
       ),
     >())->toEqual(
       '(from shape: _ shape('.
