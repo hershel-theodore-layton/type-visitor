@@ -6,9 +6,10 @@ name: Continuous Integration
 on:
   push:
   pull_request:
+  workflow_dispatch:
   schedule:
     # Run every day at 6:04PM
-    - cron: '4 18 * * *'
+    - cron: "4 18 * * *"
 jobs:
   build:
     name: HHVM ${{matrix.hhvm}}
