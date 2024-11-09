@@ -24,7 +24,20 @@ final class TypenameVisitorTest extends HackTest {
       '\HTL\TypeVisitor\Tests\AlreadyNullableIntAlias',
     );
   }
+
+  public function test_shape_suffixes()[defaults]: void {
+    expect(static::visit<shape('x' => int, ...)>())->toEqual(
+      "shape('x' => int, ...)",
+    );
+    expect(static::visit<shape('x' => int /*_*/)>())->toEqual(
+      "shape('x' => int /*closed*/)",
+    );
+  }
+
   private static function visit<reify T>()[]: string {
-    return TypeVisitor\visit<T, _, _>(new TypeVisitor\TypenameVisitor());
+    return TypeVisitor\visit<T, _, _>(new TypeVisitor\TypenameVisitor(
+      null,
+      shape('closed_shape_suffix' => ' /*closed*/'),
+    ));
   }
 }

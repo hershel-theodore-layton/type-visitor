@@ -9,9 +9,18 @@ use namespace HH\Lib\{C, Str};
  */
 final class TypenameVisitor implements TypeDeclVisitor<string, string> {
   const type TShapeKeyNamer = (function(?string, arraykey)[]: ?string);
+  private this::TShapeKeyNamer $shapeKeyNamer;
+
+  /**
+   * @option 'closed_shape_suffix' will be placed immediately before the closing
+   *         paren of an open shape, so `shape('x' => int, here)`.
+   */
   public function __construct(
-    private this::TShapeKeyNamer $shapeKeyNamer = ($_, $_)[] ==> null,
-  )[] {}
+    ?this::TShapeKeyNamer $shape_key_namer = null,
+    private shape(?'closed_shape_suffix' => string /*_*/) $options = shape(),
+  )[] {
+    $this->shapeKeyNamer = $shape_key_namer ?? ($_, $_)[] ==> null;
+  }
 
   public function panic(string $message)[]: string {
     throw new \UnexpectedValueException($message);
@@ -139,7 +148,9 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     return static::aliasOr(
       $alias,
       Str\join($fields, ', ')
-        |> $is_open ? (C\is_empty($fields) ? $$.'...' : $$.', ...') : $$
+        |> $is_open
+          ? (C\is_empty($fields) ? $$.'...' : $$.', ...')
+          : $$.($this->options['closed_shape_suffix'] ?? '')
         |> Str\format('shape(%s)', $$),
     );
   }
