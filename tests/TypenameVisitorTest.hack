@@ -3,6 +3,7 @@ namespace HTL\TypeVisitor\Tests;
 
 use type Facebook\HackTest\HackTest;
 use function Facebook\FBExpect\expect;
+use namespace HH\Lib\Str;
 use namespace HTL\TypeVisitor;
 
 final class TypenameVisitorTest extends HackTest {
@@ -30,14 +31,15 @@ final class TypenameVisitorTest extends HackTest {
       "shape('x' => int, ...)",
     );
     expect(static::visit<shape('x' => int /*_*/)>())->toEqual(
-      "shape('x' => int /*closed*/)",
+      "shape('x' => int, /*closed*/)",
     );
   }
 
   private static function visit<reify T>()[]: string {
     return TypeVisitor\visit<T, _, _>(new TypeVisitor\TypenameVisitor(
       null,
-      shape('closed_shape_suffix' => ' /*closed*/'),
-    ));
+      shape('closed_shape_suffix' => '/*closed*/'),
+    ))
+      |> Str\replace($$, "\n", '');
   }
 }

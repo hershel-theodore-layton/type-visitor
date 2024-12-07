@@ -145,13 +145,10 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     vec<string> $fields,
     bool $is_open,
   )[]: string {
+    $fields[] = $is_open ? '...' : $this->options['closed_shape_suffix'] ?? '';
     return static::aliasOr(
       $alias,
-      Str\join($fields, ', ')
-        |> $is_open
-          ? (C\is_empty($fields) ? $$.'...' : $$.', ...')
-          : $$.($this->options['closed_shape_suffix'] ?? '')
-        |> Str\format('shape(%s)', $$),
+      Str\join($fields, ", \n") |> Str\format("shape(\n%s)", $$),
     );
   }
 
