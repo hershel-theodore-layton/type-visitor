@@ -2,8 +2,8 @@
 namespace HTL\TypeVisitor\Tests;
 
 use type Facebook\HackTest\HackTest;
-use function Facebook\FBExpect\expect;
 use namespace HTL\TypeVisitor;
+use function HTL\Expect\expect;
 
 final class TestVisitorFunctionTest extends HackTest {
   public function test_simple_types()[defaults]: void {

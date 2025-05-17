@@ -2,9 +2,9 @@
 namespace HTL\TypeVisitor\Tests;
 
 use type Facebook\HackTest\HackTest;
-use function Facebook\FBExpect\expect;
 use namespace HH\Lib\Str;
 use namespace HTL\TypeVisitor;
+use function HTL\Expect\expect;
 
 final class TypenameVisitorTest extends HackTest {
   public function test_nullable_and_inner_alias()[defaults]: void {
