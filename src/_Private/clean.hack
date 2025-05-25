@@ -1,6 +1,8 @@
 /** type-visitor is MIT licensed, see /LICENSE. */
 namespace HTL\TypeVisitor\_Private;
 
+use namespace HTL\HH4Shim;
+
 function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
   $partial__0 = $htl_untyped_variable as shape(
     ?'access_list' => KeyedContainer<_, _>,
@@ -35,7 +37,7 @@ function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
       (new \ReflectionTypeAlias($partial__0['alias']))->getTypeStructure(),
       'opaque',
       false,
-    )
+    ) === true
   ) {
     $partial__0['opaque'] = true;
   }
@@ -43,7 +45,7 @@ function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
   // Erase hadva-ness
   if (Shapes::keyExists($partial__0, 'elem_types')) {
     invariant(
-      \HH\is_vec_or_varray($partial__0['elem_types']),
+      HH4Shim\is_vecish($partial__0['elem_types']),
       'Can not safely cast to vec',
     );
     $partial__0['elem_types'] = vec($partial__0['elem_types']);
@@ -52,7 +54,7 @@ function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
   }
   if (Shapes::keyExists($partial__0, 'return_type')) {
     invariant(
-      \HH\is_dict_or_darray($partial__0['return_type']),
+      HH4Shim\is_dictish($partial__0['return_type']),
       'Can not safely cast to dict',
     );
     $partial__0['return_type'] =
@@ -62,7 +64,7 @@ function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
   }
   if (Shapes::keyExists($partial__0, 'param_types')) {
     invariant(
-      \HH\is_vec_or_varray($partial__0['param_types']),
+      HH4Shim\is_vecish($partial__0['param_types']),
       'Can not safely cast to vec',
     );
     $partial__0['param_types'] = vec($partial__0['param_types']);
@@ -71,7 +73,7 @@ function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
   }
   if (Shapes::keyExists($partial__0, 'generic_types')) {
     invariant(
-      \HH\is_vec_or_varray($partial__0['generic_types']),
+      HH4Shim\is_vecish($partial__0['generic_types']),
       'Can not safely cast to vec',
     );
     $partial__0['generic_types'] = vec($partial__0['generic_types']);
@@ -80,7 +82,7 @@ function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
   }
   if (Shapes::keyExists($partial__0, 'access_list')) {
     invariant(
-      \HH\is_vec_or_varray($partial__0['access_list']),
+      HH4Shim\is_vecish($partial__0['access_list']),
       'Can not safely cast to vec',
     );
     $partial__0['access_list'] = vec($partial__0['access_list']);
@@ -89,7 +91,7 @@ function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
   }
   if (Shapes::keyExists($partial__0, 'fields')) {
     invariant(
-      \HH\is_dict_or_darray($partial__0['fields']),
+      HH4Shim\is_dictish($partial__0['fields']),
       'Can not safely cast to dict',
     );
     $partial__0['fields'] = infer_keytype_arraykey(dict($partial__0['fields']));
@@ -98,7 +100,7 @@ function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
   }
   if (Shapes::keyExists($partial__0, 'value')) {
     invariant(
-      \HH\is_dict_or_darray($partial__0['value']),
+      HH4Shim\is_dictish($partial__0['value']),
       'Can not safely cast to dict',
     );
     $partial__0['value'] = infer_keytype_arraykey(dict($partial__0['value']));

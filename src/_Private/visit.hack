@@ -211,7 +211,19 @@ function visit<Tt, Tf>(
       );
     case TypeStructureKind::OF_VOID:
       return $visitor->void($alias);
-    case TypeStructureKind::OF_XHP:
-      return $visitor->unsupportedType('xhp');
+    default:
+      if ($kind === TypeStructureKind::OF_XHP) {
+        return $visitor->unsupportedType('xhp');
+      } else if ($kind === 31) {
+        return $visitor->unsupportedType('OF_UNION');
+      } else if ($kind === 32) {
+        return $visitor->unsupportedType('OF_RECURSIVE_UNION');
+      } else if ($kind === 33) {
+        return $visitor->unsupportedType('OF_CLASS_PTR');
+      } else if ($kind === 34) {
+        return $visitor->unsupportedType('OF_CLASS_OR_CLASSNAME');
+      } else {
+        return $visitor->unsupportedType('UNKNOWN_TYPE:' . $kind);
+      }
   }
 }

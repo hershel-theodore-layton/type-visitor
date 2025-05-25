@@ -96,7 +96,6 @@ function test_visitor_function_test(TestChain\Chain $chain)[]: TestChain\Chain {
           'nullable' => ?string,
           ?'optional' => float,
           ?'illusive' => ?bool,
-          MyClass::ONE => num,
           /*_*/
         ),
       >())->toEqual(
@@ -104,8 +103,7 @@ function test_visitor_function_test(TestChain\Chain $chain)[]: TestChain\Chain {
         "'required' => (from int: _ int), ".
         "'nullable' => (from nullable: _ ?(from string: _ string)), ".
         "?'optional' => (from float: _ float), ".
-        "?'illusive' => (from nullable: _ ?(from bool: _ bool)), ".
-        '1 => (from num: _ num)'.
+        "?'illusive' => (from nullable: _ ?(from bool: _ bool))".
         '))',
       );
     })
