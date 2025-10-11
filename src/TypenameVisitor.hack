@@ -2,6 +2,7 @@
 namespace HTL\TypeVisitor;
 
 use namespace HH\Lib\{C, Str};
+use function var_export_pure;
 
 /**
  * Returns a textual `typename<T>` suitable for embedding in any namespace.
@@ -40,8 +41,7 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     return Str\format(
       '%s%s => %s',
       $is_optional ? '?' : '',
-      (($this->shapeKeyNamer)($parent_shape_name, $key)) ??
-        ($key is string ? _Private\string_export($key) : (string)$key),
+      ($this->shapeKeyNamer)($parent_shape_name, $key) ?? var_export_pure($key),
       $type,
     );
   }

@@ -2,7 +2,8 @@
 namespace HTL\TypeVisitor\_Private;
 
 // Built-in as https://github.com/facebook/hhvm/blob/master/hphp/hack/hhi/typestructure.hhi
-// This can not be used portably, because of hadva.
+// In previous versions, this type had issues with hadva (varray, darray);
+// This is why the fields of this type are KeyedContainer.
 // Removed classname-ness to classname, since this can not be asserted.
 type CleanTypeStructure = shape(
   ?'access_list' => KeyedContainer<int, mixed>,

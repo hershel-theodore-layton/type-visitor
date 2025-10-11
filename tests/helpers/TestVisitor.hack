@@ -2,8 +2,8 @@
 namespace HTL\TypeVisitor\Tests;
 
 use namespace HH\Lib\{C, Str};
-use namespace HTL\TypeVisitor\_Private;
 use type HTL\TypeVisitor\{TAlias, TypeDeclVisitor};
+use function var_export_pure;
 
 final class TestVisitor implements TypeDeclVisitor<string, string> {
   const TAlias EMPTY_ALIAS =
@@ -27,7 +27,7 @@ final class TestVisitor implements TypeDeclVisitor<string, string> {
     return Str\format(
       '%s%s => %s',
       $is_optional ? '?' : '',
-      $key is string ? _Private\string_export($key) : (string)$key,
+      var_export_pure($key),
       $type,
     );
   }
