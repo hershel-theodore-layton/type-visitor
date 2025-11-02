@@ -41,7 +41,8 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     return Str\format(
       '%s%s => %s',
       $is_optional ? '?' : '',
-      ($this->shapeKeyNamer)($parent_shape_name, $key) ?? var_export_pure($key),
+      ($this->shapeKeyNamer)($parent_shape_name, $key) ??
+        var_export_pure($key) as string,
       $type,
     );
   }

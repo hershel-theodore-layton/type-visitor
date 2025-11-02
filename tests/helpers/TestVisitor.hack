@@ -27,7 +27,7 @@ final class TestVisitor implements TypeDeclVisitor<string, string> {
     return Str\format(
       '%s%s => %s',
       $is_optional ? '?' : '',
-      var_export_pure($key),
+      var_export_pure($key) as string,
       $type,
     );
   }
