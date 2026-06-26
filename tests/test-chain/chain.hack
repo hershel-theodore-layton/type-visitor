@@ -4,7 +4,7 @@ namespace HTL\Project_UHOruXcLGGYc\GeneratedTestChain;
 use namespace HTL\TestChain;
 
 async function tests_async(
-  TestChain\ChainController<\HTL\TestChain\Chain> $controller
+  TestChain\ChainController<\HTL\TestChain\Chain> $controller,
 )[defaults]: Awaitable<TestChain\ChainController<\HTL\TestChain\Chain>> {
   return $controller
     ->addTestGroup(\HTL\TypeVisitor\Tests\test_visitor_function_test<>)
