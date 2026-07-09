@@ -130,7 +130,8 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
 
     $rt = new \ReflectionTypeAlias($alias_name);
     $base = '\\'.$alias_name;
-    return $rt->getTypeStructure()['nullable'] ?? false ? $base : '?'.$base;
+    return $rt->getTypeStructure()['nullable'] ?? false
+      |> $$ === true ? $base : '?'.$base;
   }
 
   public function num(TAlias $alias)[]: string {
