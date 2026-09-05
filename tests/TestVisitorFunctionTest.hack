@@ -39,9 +39,9 @@ function test_visitor_function_test(TestChain\Chain $chain)[]: TestChain\Chain {
         '))',
       );
 
-      // Note that `class enum` is an `enum` and not a `class` on hhvm 4.102.
+      // Note that `class enum` is an `enum` and not a `class` on HHVM 4.102.
       // I am unable to confirm where in the range 4.102-4.109 the switch was made.
-      // I know that 4.109 has a modern `class` intepretation, so `<= 4.108`.
+      // I know that 4.109 has a modern `class` interpretation, so `<= 4.108`.
       $enum_class = \version_compare(\HHVM_VERSION, '4.108', '<=')
         ? '(from enum: _ HTL\TypeVisitor\Tests\MyClassEnum)'
         : '(from class: _ HTL\TypeVisitor\Tests\MyClassEnum)';
@@ -80,7 +80,7 @@ function test_visitor_function_test(TestChain\Chain $chain)[]: TestChain\Chain {
         '(from vec: _ vec<(from string: _ string)>)',
       );
 
-      // Note how both the one and two generic argument variant are supported.
+      // Note how both the one- and two-generic-argument variants are supported.
       expect(visit<vec_or_dict<string>>())->toEqual(
         '(from vecOrDict: _ vec_or_dict<(from string: _ string)>)',
       );
