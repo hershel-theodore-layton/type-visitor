@@ -2,6 +2,7 @@
 namespace HTL\TypeVisitor;
 
 use namespace HH\Lib\{C, Str};
+use type ReflectionTypeAlias, UnexpectedValueException;
 use function var_export_pure;
 
 /**
@@ -24,11 +25,11 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
   }
 
   public function panic(string $message)[]: string {
-    throw new \UnexpectedValueException($message);
+    throw new UnexpectedValueException($message);
   }
 
   public function unsupportedType(string $type_name)[]: string {
-    throw new \UnexpectedValueException($type_name);
+    throw new UnexpectedValueException($type_name);
   }
 
   public function shapeField(
@@ -128,7 +129,7 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
       return '?'.$inner;
     }
 
-    $rt = new \ReflectionTypeAlias($alias_name);
+    $rt = new ReflectionTypeAlias($alias_name);
     $base = '\\'.$alias_name;
     return $rt->getTypeStructure()['nullable'] ?? false
       |> $$ === true ? $base : '?'.$base;

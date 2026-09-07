@@ -1,6 +1,8 @@
 /** type-visitor is MIT licensed, see /LICENSE. */
 namespace HTL\TypeVisitor\_Private;
 
+use type ReflectionTypeAlias;
+
 function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
   $partial__0 = $htl_untyped_variable as shape(
     ?'access_list' => vec<_>,
@@ -32,10 +34,11 @@ function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
     Shapes::keyExists($partial__0, 'alias') &&
     !Shapes::idx($partial__0, 'opaque', false) &&
     idx(
-      (new \ReflectionTypeAlias($partial__0['alias']))->getTypeStructure(),
+      (new ReflectionTypeAlias($partial__0['alias']))->getTypeStructure(),
       'opaque',
       false,
-    ) === true
+    ) ===
+      true
   ) {
     $partial__0['opaque'] = true;
   }

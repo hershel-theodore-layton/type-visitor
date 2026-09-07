@@ -3,6 +3,8 @@ namespace HTL\TypeVisitor\Tests;
 
 use namespace HTL\{TestChain, TypeVisitor};
 use function HTL\Expect\expect;
+use function version_compare;
+use const HHVM_VERSION;
 
 <<TestChain\Discover>>
 function test_visitor_function_test(TestChain\Chain $chain)[]: TestChain\Chain {
@@ -42,7 +44,7 @@ function test_visitor_function_test(TestChain\Chain $chain)[]: TestChain\Chain {
       // Note that `class enum` is an `enum` and not a `class` on HHVM 4.102.
       // I am unable to confirm where in the range 4.102-4.109 the switch was made.
       // I know that 4.109 has a modern `class` interpretation, so `<= 4.108`.
-      $enum_class = \version_compare(\HHVM_VERSION, '4.108', '<=')
+      $enum_class = version_compare(HHVM_VERSION, '4.108', '<=')
         ? '(from enum: _ HTL\TypeVisitor\Tests\MyClassEnum)'
         : '(from class: _ HTL\TypeVisitor\Tests\MyClassEnum)';
 
