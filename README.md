@@ -20,7 +20,6 @@ The [TAlias](./src/TAlias.hack) type contains three fields for advanced use:
    - True iff the alias is declared using `newtype` instead of plain `type`.
  - `"counter"`:
    - A unique integer for each call to your visitor functions.
-   - This sequence starts at `1` and increases with each call to `$visitor->x()`.
 
 **Warning for users on HHVM 4.102 through 4.108.**
 
