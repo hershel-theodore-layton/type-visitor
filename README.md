@@ -10,7 +10,7 @@ For an example use, see [TypenameVisitor](./src/TypenameVisitor.hack).
 
 Call [TypeVisitor\visit()](./src/visit.hack) to get going.
 
-The [TAlias](./src/TAlias.hack) type contains three fields for advanced use:
+The [TAlias](./src/TAlias.hack) type contains these fields for advanced use:
  - `"alias"`
    - The name `"ExampleName"` on the LHS of this statement:
    ```HACK
@@ -18,6 +18,10 @@ The [TAlias](./src/TAlias.hack) type contains three fields for advanced use:
    ```
  - `"opaque"`:
    - True iff the alias is declared using `newtype` instead of plain `type`.
+ - `"typevar_types"` (optional):
+   - Instantiated HHVM type structures keyed by alias parameter name, including
+     parameters unused in the underlying type. `TypenameVisitor` uses these to
+     render generic aliases and newtypes with their type arguments.
  - `"counter"`:
    - A unique integer for each call to your visitor functions.
 

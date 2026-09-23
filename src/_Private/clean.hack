@@ -24,9 +24,20 @@ function clean(mixed $htl_untyped_variable)[]: CleanTypeStructure {
     ?'return_type' => dict<_, _>,
     ?'root_name' => ?string,
     ?'typevars' => string,
+    ?'typevar_types' => dict<_, _>,
     ?'value' => vec<_>,
     ...
   );
+
+  $typevar_types = $partial__0['typevar_types'] ?? null;
+  Shapes::removeKey(inout $partial__0, 'typevar_types');
+  if ($typevar_types is nonnull) {
+    $arguments = dict[];
+    foreach ($typevar_types as $name => $argument) {
+      $arguments[$name as string] = $argument;
+    }
+    $partial__0['typevar_types'] = $arguments;
+  }
 
   // Type structures are sometimes lacking the opaque field for newtypes.
   // We can patch around this by using runtime reflection.

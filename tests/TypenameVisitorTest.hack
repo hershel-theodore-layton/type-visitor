@@ -26,6 +26,27 @@ function typename_visitor_test(TestChain\Chain $chain)[]: TestChain\Chain {
         '\HTL\TypeVisitor\Tests\AlreadyNullableIntAlias',
       );
     })
+    ->test('test_generic_aliases', () ==> {
+      $prefix = '\\HTL\TypeVisitor\Tests\\';
+      expect(visit_shapes<GenericAlias<int>>())
+        ->toEqual($prefix.'GenericAlias<int>');
+      expect(visit_shapes<GenericNewtype<string>>())
+        ->toEqual($prefix.'GenericNewtype<string>');
+      expect(visit_shapes<Reordered<int, string>>())
+        ->toEqual($prefix.'Reordered<int, string>');
+      expect(visit_shapes<Unused<string>>())
+        ->toEqual($prefix.'Unused<string>');
+      expect(visit_shapes<Nested<string>>())
+        ->toEqual($prefix.'Nested<string>');
+      expect(visit_shapes<GenericAlias<GenericNewtype<int>>>())
+        ->toEqual($prefix.'GenericAlias<'.$prefix.'GenericNewtype<int>>');
+      expect(visit_shapes<?GenericAlias<int>>())
+        ->toEqual('?'.$prefix.'GenericAlias<int>');
+      expect(visit_shapes<NullableAlias<int>>())
+        ->toEqual($prefix.'NullableAlias<int>');
+      expect(visit_shapes<GenericAlias<shape('x' => int /*_*/)>>())
+        ->toEqual($prefix."GenericAlias<shape('x' => int, /*closed*/)>");
+    })
     ->test('test_shape_suffixes', () ==> {
       expect(visit_shapes<shape('x' => int, ...)>())->toEqual(
         "shape('x' => int, ...)",

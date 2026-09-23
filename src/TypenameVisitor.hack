@@ -49,11 +49,11 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
   }
 
   public function arraykey(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'arraykey');
+    return $this->aliasOr($alias, 'arraykey');
   }
 
   public function bool(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'bool');
+    return $this->aliasOr($alias, 'bool');
   }
 
   public function class(
@@ -62,7 +62,7 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     vec<string> $generics,
   )[]: string {
     $classname = '\\'.$classname;
-    return static::aliasOr(
+    return $this->aliasOr(
       $alias,
       C\is_empty($generics)
         ? $classname
@@ -71,23 +71,23 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
   }
 
   public function dict(TAlias $alias, string $key, string $value)[]: string {
-    return static::aliasOr($alias, Str\format('dict<%s, %s>', $key, $value));
+    return $this->aliasOr($alias, Str\format('dict<%s, %s>', $key, $value));
   }
 
   public function dynamic(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'dynamic');
+    return $this->aliasOr($alias, 'dynamic');
   }
 
   public function enum(TAlias $alias, string $classname)[]: string {
-    return static::aliasOr($alias, $this->class($alias, $classname, vec[]));
+    return $this->aliasOr($alias, $this->class($alias, $classname, vec[]));
   }
 
   public function float(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'float');
+    return $this->aliasOr($alias, 'float');
   }
 
   public function int(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'int');
+    return $this->aliasOr($alias, 'int');
   }
 
   public function interface(
@@ -95,31 +95,31 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     string $classname,
     vec<string> $generics,
   )[]: string {
-    return static::aliasOr($alias, $this->class($alias, $classname, $generics));
+    return $this->aliasOr($alias, $this->class($alias, $classname, $generics));
   }
 
   public function keyset(TAlias $alias, string $inner)[]: string {
-    return static::aliasOr($alias, Str\format('keyset<%s>', $inner));
+    return $this->aliasOr($alias, Str\format('keyset<%s>', $inner));
   }
 
   public function mixed(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'mixed');
+    return $this->aliasOr($alias, 'mixed');
   }
 
   public function nonnull(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'nonnull');
+    return $this->aliasOr($alias, 'nonnull');
   }
 
   public function noreturn(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'noreturn');
+    return $this->aliasOr($alias, 'noreturn');
   }
 
   public function nothing(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'nothing');
+    return $this->aliasOr($alias, 'nothing');
   }
 
   public function null(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'null');
+    return $this->aliasOr($alias, 'null');
   }
 
   public function nullable(TAlias $alias, string $inner)[]: string {
@@ -130,17 +130,17 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     }
 
     $rt = new ReflectionTypeAlias($alias_name);
-    $base = '\\'.$alias_name;
+    $base = $this->aliasOr($alias, $inner);
     return $rt->getTypeStructure()['nullable'] ?? false
       |> $$ === true ? $base : '?'.$base;
   }
 
   public function num(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'num');
+    return $this->aliasOr($alias, 'num');
   }
 
   public function resource(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'resource');
+    return $this->aliasOr($alias, 'resource');
   }
 
   public function shape(
@@ -149,14 +149,14 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     bool $is_open,
   )[]: string {
     $fields[] = $is_open ? '...' : $this->options['closed_shape_suffix'] ?? '';
-    return static::aliasOr(
+    return $this->aliasOr(
       $alias,
       Str\join($fields, ", \n") |> Str\format("shape(\n%s)", $$),
     );
   }
 
   public function string(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'string');
+    return $this->aliasOr($alias, 'string');
   }
 
   public function trait(
@@ -164,33 +164,52 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     string $classname,
     vec<string> $generics,
   )[]: string {
-    return static::aliasOr($alias, $this->class($alias, $classname, $generics));
+    return $this->aliasOr($alias, $this->class($alias, $classname, $generics));
   }
 
   public function tuple(TAlias $alias, vec<string> $elements)[]: string {
     return
-      static::aliasOr($alias, Str\format('(%s)', Str\join($elements, ', ')));
+      $this->aliasOr($alias, Str\format('(%s)', Str\join($elements, ', ')));
   }
 
   public function vec(TAlias $alias, string $inner)[]: string {
-    return static::aliasOr($alias, Str\format('vec<%s>', $inner));
+    return $this->aliasOr($alias, Str\format('vec<%s>', $inner));
   }
 
   public function vecOrDict(TAlias $alias, vec<string> $inner)[]: string {
-    return static::aliasOr(
+    return $this->aliasOr(
       $alias,
       Str\format('vec_or_dict<%s>', Str\join($inner, ', ')),
     );
   }
 
   public function void(TAlias $alias)[]: string {
-    return static::aliasOr($alias, 'void');
+    return $this->aliasOr($alias, 'void');
   }
 
-  private static function aliasOr(
-    TAlias $alias,
-    string $alternative,
-  )[]: string {
-    return $alias['alias'] |> $$ is nonnull ? '\\'.$$ : $alternative;
+  private function aliasOr(TAlias $alias, string $alternative)[]: string {
+    $name = $alias['alias'];
+    if ($name is null) {
+      return $alternative;
+    }
+
+    $arguments = $alias['typevar_types'] ?? dict[];
+    if (C\is_empty($arguments)) {
+      return '\\'.$name;
+    }
+
+    $typevars = (new ReflectionTypeAlias($name))->getTypeStructure()['typevars']
+      as string;
+    $rendered = vec[];
+    foreach (Str\split($typevars, ',') as $parameter) {
+      // Rendering alias arguments does not change the main traversal's IDs.
+      $counter = 0;
+      $rendered[] = _Private\visit(
+        $this,
+        _Private\clean($arguments[$parameter]),
+        inout $counter,
+      );
+    }
+    return Str\format('\\%s<%s>', $name, Str\join($rendered, ', '));
   }
 }

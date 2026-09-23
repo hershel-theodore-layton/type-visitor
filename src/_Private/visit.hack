@@ -17,6 +17,10 @@ function visit<Tt, Tf>(
     'opaque' => $s['opaque'] ?? false,
   );
 
+  if (Shapes::keyExists($s, 'typevar_types')) {
+    $alias['typevar_types'] = $s['typevar_types'];
+  }
+
   if ($s['nullable'] ?? false) {
     $s['nullable'] = false;
     return $visitor->nullable($alias, visit($visitor, $s, inout $counter));
