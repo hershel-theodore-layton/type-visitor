@@ -227,7 +227,7 @@ function visit<Tt, Tf>(
       } else if ($kind === 34) {
         return $visitor->unsupportedType('OF_CLASS_OR_CLASSNAME');
       } else {
-        return $visitor->unsupportedType('UNKNOWN_TYPE:' . $kind);
+        return $visitor->unsupportedType('UNKNOWN_TYPE:'.$kind);
       }
   }
 }
