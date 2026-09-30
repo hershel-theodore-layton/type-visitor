@@ -187,9 +187,13 @@ final class TestVisitor implements TypeDeclVisitor<string, string> {
   private static function fmt(
     string $function,
     TAlias $alias,
-    string $repr = $function,
+    ?string $repr = null,
   )[]: string {
-    return
-      Str\format('(from %s: %s %s)', $function, $alias['alias'] ?? '_', $repr);
+    return Str\format(
+      '(from %s: %s %s)',
+      $function,
+      $alias['alias'] ?? '_',
+      $repr ?? $function,
+    );
   }
 }
