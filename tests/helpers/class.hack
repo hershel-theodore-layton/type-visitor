@@ -7,6 +7,7 @@ enum MyEnum: int {}
 enum class MyClassEnum: int {}
 final class MyClass {
   const int ONE = 1;
+  const int NEGATIVE_ONE = -1;
 }
 final class MyGenericClass<T> {}
 trait MyTrait {}

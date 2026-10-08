@@ -11,3 +11,5 @@ newtype Reordered<Ta, Tb as arraykey> = dict<Tb, Ta>;
 type Unused<T> = int;
 type Nested<T> = GenericNewtype<vec<T>>;
 type NullableAlias<T> = ?vec<T>;
+
+newtype IntegerKeyShape = shape(MyClass::ONE => int /*_*/);

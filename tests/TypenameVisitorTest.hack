@@ -3,7 +3,8 @@ namespace HTL\TypeVisitor\Tests;
 
 use namespace HH\Lib\Str;
 use namespace HTL\{TestChain, TypeVisitor};
-use function HTL\Expect\expect;
+use type UnexpectedValueException;
+use function HTL\Expect\{expect, expect_invoked};
 
 <<TestChain\Discover>>
 function typename_visitor_test(TestChain\Chain $chain)[]: TestChain\Chain {
@@ -46,6 +47,20 @@ function typename_visitor_test(TestChain\Chain $chain)[]: TestChain\Chain {
         ->toEqual($prefix.'NullableAlias<int>');
       expect(visit_shapes<GenericAlias<shape('x' => int /*_*/)>>())
         ->toEqual($prefix."GenericAlias<shape('x' => int, /*closed*/)>");
+    })
+    ->test('test_unnamed_integer_shape_keys', () ==> {
+      expect_invoked(visit_shapes<shape(MyClass::ONE => int /*_*/)>)
+        ->toHaveThrown<UnexpectedValueException>('shape key namer');
+      expect_invoked(visit_shapes<shape(MyClass::NEGATIVE_ONE => int /*_*/)>)
+        ->toHaveThrown<UnexpectedValueException>('shape key namer');
+      expect_invoked(visit_shapes<IntegerKeyShape>)
+        ->toHaveThrown<UnexpectedValueException>('shape key namer');
+      expect_invoked(
+        () ==> TypeVisitor\visit<shape(MyClass::ONE => int /*_*/), _, _>(
+          new TypeVisitor\TypenameVisitor(($_, $_)[] ==> null),
+        ),
+      )
+        ->toHaveThrown<UnexpectedValueException>('shape key namer');
     })
     ->test('test_shape_suffixes', () ==> {
       expect(visit_shapes<shape('x' => int, ...)>())->toEqual(

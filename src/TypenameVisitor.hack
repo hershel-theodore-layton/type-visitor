@@ -10,6 +10,7 @@ use function var_export_pure;
  * (All types that are not auto-imported are fully qualified.)
  */
 final class TypenameVisitor implements TypeDeclVisitor<string, string> {
+  /** Integer keys require a nonnull class-constant name from this callback. */
   const type TShapeKeyNamer = (function(?string, arraykey)[]: ?string);
   private this::TShapeKeyNamer $shapeKeyNamer;
 
@@ -39,11 +40,18 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     bool $is_optional,
     string $type,
   )[]: string {
+    $name = ($this->shapeKeyNamer)($parent_shape_name, $key);
+    if ($name is null && $key is int) {
+      throw new UnexpectedValueException(Str\format(
+        'Integer shape key %d requires a shape key namer returning a class constant.',
+        $key,
+      ));
+    }
+
     return Str\format(
       '%s%s => %s',
       $is_optional ? '?' : '',
-      ($this->shapeKeyNamer)($parent_shape_name, $key) ??
-        var_export_pure($key) as string,
+      $name ?? var_export_pure($key) as string,
       $type,
     );
   }
