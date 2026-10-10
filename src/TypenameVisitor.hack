@@ -16,7 +16,7 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
 
   /**
    * @option 'closed_shape_suffix' will be placed immediately before the closing
-   *         paren of an open shape, so `shape('x' => int, here)`.
+   *         paren of a closed shape, so `shape('x' => int, here)`.
    */
   public function __construct(
     ?this::TShapeKeyNamer $shape_key_namer = null,

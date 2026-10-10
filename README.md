@@ -5,10 +5,25 @@ The [BigSwitch](./src/_Private/visit.hack) used to be tied to `new SomeTypeStruc
 You are now able to slot in whatever functionality you need.
 
 `HTL\TypeVisitor` allows you to visit a reifiable type by implementing
-the [`Visitor<Tt, Tf>`](./src/Visitor.hack) interface.
+the [`TypeDeclVisitor<Tt, Tf>`](./src/Visitor.hack) interface.
 For an example use, see [TypenameVisitor](./src/TypenameVisitor.hack).
 
-Call [TypeVisitor\visit()](./src/visit.hack) to get going.
+Call [TypeVisitor\visit()](./src/visit.hack) to get going. For example:
+
+```hack
+use namespace HTL\TypeVisitor;
+
+function describe_dict(
+  TypeVisitor\TypeDeclVisitor<string, string> $visitor,
+)[]: string {
+  return TypeVisitor\visit<dict<int, string>, _, _>($visitor);
+}
+// describe_dict(new TypeVisitor\TypenameVisitor()) returns 'dict<int, string>'.
+```
+
+To implement your own visitor, use `Tt` for the result of visiting a type and
+`Tf` for a shape field's result; `shape()` receives these results as `vec<Tf>`.
+[TypenameVisitor](./src/TypenameVisitor.hack) is a complete implementation.
 
 The [TAlias](./src/TAlias.hack) type contains these fields for advanced use:
  - `"alias"`
@@ -23,16 +38,8 @@ The [TAlias](./src/TAlias.hack) type contains these fields for advanced use:
      parameters unused in the underlying type. `TypenameVisitor` uses these to
      render generic aliases and newtypes with their type arguments.
  - `"counter"`:
-   - A unique integer for each call to your visitor functions.
-
-**Warning for users on HHVM 4.102 through 4.108.**
-
-At some point between HHVM versions 4.102 and 4.108,
-HHVM changed the kind of `enum class` from `enum` to `class`.
-This means that `->enum()` will be called instead of `->class()`.
-If your visitors need to have consistent behavior on all supported HHVM versions,
-you must add a reflection-based check at the top of `function enum(...)` and
-call `->class()` if the argument is a `classname` of an `enum class`.
+   - A unique integer for each visited type within a `visit()` call.
+     `shapeField()` receives no `TAlias` and has no counter of its own.
 
 Go ahead and build something awesome:
  - Generate documentation based on Hack types.
