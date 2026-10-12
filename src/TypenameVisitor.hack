@@ -202,12 +202,19 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     }
 
     $arguments = $alias['typevar_types'] ?? dict[];
+    $typevars = (new ReflectionTypeAlias($name))->getTypeStructure()['typevars']
+      ?? '';
     if (C\is_empty($arguments)) {
+      if ($typevars !== '') {
+        throw new UnexpectedValueException(Str\format(
+          'Cannot render generic alias %s: HHVM did not retain its type arguments.',
+          $name,
+        ));
+      }
       return '\\'.$name;
     }
 
-    $typevars = (new ReflectionTypeAlias($name))->getTypeStructure()['typevars']
-      as string;
+    $typevars = $typevars as string;
     $rendered = vec[];
     foreach (Str\split($typevars, ',') as $parameter) {
       // Rendering alias arguments does not change the main traversal's IDs.

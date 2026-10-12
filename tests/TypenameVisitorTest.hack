@@ -48,6 +48,41 @@ function typename_visitor_test(TestChain\Chain $chain)[]: TestChain\Chain {
       expect(visit_shapes<GenericAlias<shape('x' => int /*_*/)>>())
         ->toEqual($prefix."GenericAlias<shape('x' => int, /*closed*/)>");
     })
+    ->test('test_erased_builtin_alias_arguments', () ==> {
+      // Captured reified metadata: checked Hack rejects these built-ins as
+      // direct reified arguments, so exercise their erased structures here.
+      $classname = dict[
+        'kind' => 4,
+        'opaque' => true,
+        'alias' => 'HH\\classname',
+      ];
+      $typename = dict[
+        'kind' => 4,
+        'opaque' => true,
+        'alias' => 'HH\\typename',
+      ];
+      $unused = dict['kind' => 1, 'alias' => 'HTL\\TypeVisitor\\Tests\\Unused'];
+      $unused['typevar_types'] = dict['T' => $typename];
+      foreach (vec[
+        $classname,
+        $typename,
+        dict['kind' => 20, 'generic_types' => vec[$classname]],
+        dict[
+          'kind' => 19,
+          'generic_types' => vec[dict['kind' => 4], $typename],
+        ],
+        $unused,
+      ] as $structure) {
+        expect_invoked(() ==> {
+          $counter = 0;
+          return TypeVisitor\_Private\visit(
+            new TypeVisitor\TypenameVisitor(),
+            TypeVisitor\_Private\clean($structure),
+            inout $counter,
+          );
+        })->toHaveThrown<UnexpectedValueException>('HHVM did not retain');
+      }
+    })
     ->test('test_unnamed_integer_shape_keys', () ==> {
       expect_invoked(visit_shapes<shape(MyClass::ONE => int /*_*/)>)
         ->toHaveThrown<UnexpectedValueException>('shape key namer');
