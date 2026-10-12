@@ -41,15 +41,6 @@ The [TAlias](./src/TAlias.hack) type contains these fields for advanced use:
    - A unique integer for each visited type within a `visit()` call.
      `shapeField()` receives no `TAlias` and has no counter of its own.
 
-### Rendering limitations
-
-`TypenameVisitor` throws `UnexpectedValueException` when a generic alias's
-required type arguments are absent from HHVM's metadata. In particular, HHVM
-erases the arguments of `classname<T>` and `typename<T>`, so these types cannot
-be rendered, including inside containers or other alias arguments. Emitting a
-bare alias would produce an invalid type hint. Ordinary generic aliases and
-newtypes with retained arguments remain supported.
-
 Go ahead and build something awesome:
  - Generate documentation based on Hack types.
  - Create a "weak" assertion / coercion library.
