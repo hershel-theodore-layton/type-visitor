@@ -97,6 +97,28 @@ function typename_visitor_test(TestChain\Chain $chain)[]: TestChain\Chain {
       )
         ->toHaveThrown<UnexpectedValueException>('shape key namer');
     })
+    ->test('test_shape_key_literals', () ==> {
+      $visitor = new TypeVisitor\TypenameVisitor();
+      foreach (
+        dict[
+          "\0ab" => '"\\x00ab"',
+          "a\0b" => '"a\\x00b"',
+          "ab\0" => '"ab\\x00"',
+          "\0a\0\0" => '"\\x00a\\x00\\x00"',
+          "\0\"" => '"\\x00\\""',
+          "\0\\" => '"\\x00\\\\"',
+          "\0\$" => '"\\x00\\$"',
+          "\x01\xff\x7f" => '"\\x01\\xff\\x7f"',
+          'é' => '"\\xc3\\xa9"',
+          "a'\\b" => "'a\\'\\\\b'",
+        ] as $key => $literal
+      ) {
+        expect($visitor->shapeField(null, $key, false, false, 'int'))
+          ->toEqual($literal.' => int');
+      }
+      expect(visit_shapes<shape("a\0b" => int /*_*/)>())
+        ->toEqual('shape("a\\x00b" => int, /*closed*/)');
+    })
     ->test('test_shape_suffixes', () ==> {
       expect(visit_shapes<shape('x' => int, ...)>())->toEqual(
         "shape('x' => int, ...)",

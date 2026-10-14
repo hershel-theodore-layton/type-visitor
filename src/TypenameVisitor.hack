@@ -3,7 +3,6 @@ namespace HTL\TypeVisitor;
 
 use namespace HH\Lib\{C, Str};
 use type ReflectionTypeAlias, UnexpectedValueException;
-use function var_export_pure;
 
 /**
  * Returns a textual `typename<T>` suitable for embedding in any namespace.
@@ -51,7 +50,7 @@ final class TypenameVisitor implements TypeDeclVisitor<string, string> {
     return Str\format(
       '%s%s => %s',
       $is_optional ? '?' : '',
-      $name ?? var_export_pure($key) as string,
+      $name ?? _Private\shape_key_literal($key as string),
       $type,
     );
   }
